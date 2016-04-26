@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns     = "http://www.w3.org/ns/widgets"
+        xmlns:gap = "http://phonegap.com/ns/1.0"
+        id        = "mx.jaquez.hinojos"
+        versionCode="1"
+        version   = "1.0.0">
+
+    <name>Dream Team Métodos</name>
+
+    <description>
+        Dream Team for the Win.
+    </description>
+
+    <author href="http://jaquez.mx" email="chris@jaquez.mx">
+        Christopher Jáquez
+    </author>
+
+</widget>

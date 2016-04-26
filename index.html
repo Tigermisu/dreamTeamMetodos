@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DreamTeam Métodos</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/alertify.css">
+    <link rel="stylesheet" href="css/chartist.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="header">
+        <h1 class="center">Dream Team Métodos</h1>
+    </div>
+    <div class="puntos">
+        <img src="img/logo.png" alt="MOONRISE" class="logo">
+        <div class="punto" data-control="#one">
+            <h2>Evaluar Funciones</h2>
+        </div>
+        <div class="punto" data-control="#two">
+            <h2>Encontrar Raíces</h2>
+        </div>
+        <div class="punto" data-control="#three">
+            <h2>Operaciones Matriciales</h2>
+        </div>
+        <div class="punto" data-control="#four">
+            <h2>Sistemas de Ecuaciones Lineales</h2>
+        </div>
+        <div class="punto" data-control="#five">
+            <h2>Sistemas de Ecuaciones no Lineales</h2>
+        </div>
+        <div class="punto" data-control="#six">
+            <h2>Ajuste de Curvas</h2>
+        </div>
+    </div>
+
+    <div class="methods-wrapper">
+        <div id="one" class="exercise container" style="display: none;">
+            <h2>Evaluación de funciones <br>(Por método de Horner)</h2>
+            <div class="row">
+                <div class="col-sm-5">
+                    <input type="text" id="oneEq" pattern="[x0-9^]">
+                    <label for="oneEq">Ingresar función</label>
+                </div>
+                <div class="col-sm-5">
+                    <input type="number" id="oneX" value="0">
+                    <label for="oneX">Ingresar X a evaluar</label>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-danger" id="oneCalc">Calcular</button>
+                </div>
+            </div>
+            <div class="results" style="display: none">
+                <div class="graph">
+                    <div class="ct-chart ct-minor-seventh" id="oneChart"></div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-4" id="oneValues">
+                        <p>f(x) =</p>
+                        <p>f'(x) = </p>
+                        <p>f''(x) =</p>
+                    </div>
+                    <div class="col-sm-8">
+                        <h3>Interpretación</h3>
+                        <p id="oneInter"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="two" class="excercise container" style="display: none;">
+            <h2>Raíces de una función polinomial <br>(Por método de Newton Rapshon)</h2>
+            <div class="row">
+                <div class="col-sm-5">
+                    <input type="text" id="twoEq" pattern="[x0-9^]">
+                    <label for="twoEq">Ingresar función</label>
+                </div>
+                <div class="col-sm-5">
+                    <input type="number" id="twoX" value="0">
+                    <label for="twoX">Ingresar X inicial</label>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-danger" id="twoCalc">Calcular</button>
+                </div>
+            </div>
+            <div class="results" style="display: none">
+                <div class="graph">
+                    <div class="ct-chart ct-minor-seventh" id="twoChart"></div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h3>Interpretación</h3>
+                        <p id="twoInter"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="three" class="excercise container" style="display: none;">
+            <h2>Operaciones Matriciales</h2>
+            <div class="center">
+                <h3>Elige un tamaño para la matriz A</h3>
+                <select name="ARow" id="ARow">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                </select>
+                <select name="ACol" id="ACol">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                </select>
+                <div class="matrix-wrapper">
+                    <div class="matrix" id="AMatrix">
+
+                    </div>
+                </div>
+                <label for="nAVal" class="inline">n:&nbsp;</label>
+                <input type="text" class="matrix-input" id="nAVal" value="1">
+                <div id="matrix-options-wrapper">
+                    <h3>Elige una operación</h3>
+                    <button class="matrix-option btn btn-default" id="nA">nA</button>
+                    <button class="matrix-option btn btn-default" id="ApB">A+B</button>
+                    <button class="matrix-option btn btn-default" id="AmB">A-B</button>
+                    <button class="matrix-option btn btn-default" id="AxB">A*B</button>
+                    <button class="matrix-option btn btn-default" id="Trans">Transponer A</button>
+                    <button class="matrix-option btn btn-default" id="Inv">Matriz Inversa de A</button>
+                    <button class="matrix-option btn btn-default" id="Deter">Determinante de A</button>
+                </div>
+                <div id="bWrap" style="display: none;">
+                    <h3>Elige un tamaño para la matriz B</h3>
+                    <select name="BRow" id="BRow" disabled>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                    </select>
+                    <select name="BCol" id="BCol">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                    </select>
+                    <div class="matrix-wrapper">
+                        <div class="matrix" id="BMatrix">
+
+                        </div>
+                    </div>
+                    <label for="nBVal" class="inline">n:&nbsp;</label>
+                    <input type="text" class="matrix-input" id="nBVal" value="1">
+                    <button id="calculateMatrix" class="btn btn-danger">Calcular</button>
+                </div>
+                <div id="matrixOutputWrap">
+
+                </div>
+            </div>
+        </div>
+
+        <div id="four" class="excercise container" style="display: none;">
+            <h2>Solucion de Sistemas de Ecuaciones Lineales <br> (Por método de matríz inversa)</h2>
+            <div class="center">
+                <h3>Ingresa la cantidad de incógnitas: </h3>
+                <select name="LinealRow" id="LinealRow">
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                </select>
+                <div class="matrix-wrapper">
+                    <div class="matrix lineal" id="LinealMatrix">
+
+                    </div>
+                </div>
+                <button class="btn btn-danger" id="doFour">Calcular</button>
+            </div>
+
+            <div class="results" style="display: none">
+                <div class="row">
+                    <div class="col-xs-12" id="fourOutput">
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="five" class="excercise container" style="display: none;">
+            <h2>Intersecciones de dos ecuaciones polinomiales <br> (Por el método de Newton Multivariable)</h2>
+            <div class="row">
+                <div class="col-sm-6"><input type="text" id="fiveOne"><label for="fiveOne">Ecuación Uno</label></div>
+                <div class="col-sm-6"><input type="text" id="fiveTwo"><label for="fiveTwo">Ecuación Dos</label></div>
+            </div>
+            <div class="center">
+                <input type="text" value="0" id="fiveX" style="max-width: 200px;"><label for="fiveX">X inicial</label>
+                <button class="btn btn-danger" id="doFive">Calcular</button>
+            </div>
+            <div class="results" style="display: none">
+                    <div class="graph">
+                        <div class="ct-chart ct-minor-seventh" id="fiveChart"></div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-xs-12" id="fiveOutput">
+
+                        </div>
+
+                    </div>
+                </div>
+
+        </div>
+
+        <div id="six" class="excercise container" style="display: none;">
+            <h2>Ajuste de Curvas <br>(Por método de Algebra Lineal)</h2>
+            <div class="center">
+                <h3>Ingresa la cantidad de puntos</h3>
+                <select name="fitRow" id="fitRow" style="width: 50px;">
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                </select>
+                <div class="matrix-wrapper">
+                    <div class="matrix fit" id="fitMatrix">
+                    </div>
+                </div>
+                <h3>Ingresa el grado de la curva</h3>
+                <select name="fitGrade" id="fitGrade" style="width: 50px;">
+                    <option value="1">1</option>
+                </select>
+                <button class="btn btn-danger" id="doSix">Ajustar Curva</button>
+
+                <div class="results" style="display: none">
+                    <div class="graph">
+                        <div class="ct-chart ct-minor-seventh" id="sixChart"></div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-xs-12" id="sixOutput">
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="js/plugins/bootstrap.min.js"></script>
+    <script src="js/plugins/alertify.js"></script>
+    <script src="js/plugins/chartist.min.js"></script>
+    <script src="js/helpers.js"></script>
+    <script src="js/metodos.js"></script>
+    <script src="js/interpreter.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
