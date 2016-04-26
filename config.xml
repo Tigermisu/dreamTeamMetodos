@@ -14,5 +14,7 @@
     <author href="http://jaquez.mx" email="chris@jaquez.mx">
         Christopher Jáquez
     </author>
+    
+    <plugin name="org.crosswalk.engine" spec="1.3.0" source="pgb" />
 
 </widget>

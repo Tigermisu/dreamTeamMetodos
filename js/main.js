@@ -77,7 +77,7 @@ var main = {
         Función one - contiene toda la lógica necesaria para la ejecución del punto uno de los requerimientos
     */
     one: function() {
-        var eq = $('#oneEq').val(),
+        var eq = $('#oneEq').val().toLowerCase(),
             x = $('#oneX').val();
         if (!helpers.isValidInput(eq, x)) {
             alertify.alert("Ecuación inválida.");
@@ -100,7 +100,7 @@ var main = {
         Función two - contiene toda la lógica necesaria para la ejecución del punto dos de los requerimientos
     */
     two: function() {
-        var eq = $('#twoEq').val(),
+        var eq = $('#twoEq').val().toLowerCase(),
             x = $('#twoX').val();
         if (!helpers.isValidInput(eq, x)) {
             alertify.alert("Ecuación inválida.");
@@ -489,8 +489,8 @@ var main = {
         Función five - Contiene la lógica necesaria para la ejecución del punto cinco de los requerimientos.
     */
     five: function() {
-        var eq1 = $('#fiveOne').val(),
-            eq2 = $('#fiveTwo').val(),
+        var eq1 = $('#fiveOne').val().toLowerCase(),
+            eq2 = $('#fiveTwo').val().toLowerCase(),
             x = $('#fiveX').val(),
             y = helpers.eval(eq1, x);
         if (!(helpers.isValidInput(eq1, x) && helpers.isValidInput(eq2, x))) {
