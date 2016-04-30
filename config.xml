@@ -16,5 +16,8 @@
     </author>
     
     <plugin name="org.crosswalk.engine" spec="1.3.0" source="pgb" />
+    
+    <icon src="icon.png" />
+    <splash src="splash.png" />
 
 </widget>
