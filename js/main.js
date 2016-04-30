@@ -12,29 +12,25 @@
 
 var activePage = null;
 
-function () {
-    function onLoad() {
-        document.addEventListener("deviceready", onDeviceReady, false);
-    }
+document.addEventListener("deviceready", onDeviceReady, false);
 
-    function onDeviceReady() {
-        document.addEventListener("backbutton", onBackKeyDown, false);
-    }
+function onDeviceReady() {
+    document.addEventListener("backbutton", onBackKeyDown, false);
+}
 
-    function onBackKeyDown() {
-        if (activePage == null) {
-            navigator.app.exitApp();
-        } else {
-            $(activePage).find('input').val('');
-            $('.puntos').slideDown();
-            $(activePage).find('.results').slideUp();
-            $(activePage).slideUp(function () {
-                $('#back').remove();
-                activePage = null;
-            });
-        }
+function onBackKeyDown() {
+    if (activePage == null) {
+        navigator.app.exitApp();
+    } else {
+        $(activePage).find('input').val('');
+        $('.puntos').slideDown();
+        $(activePage).find('.results').slideUp();
+        $(activePage).slideUp(function () {
+            $('#back').remove();
+            activePage = null;
+        });
     }
-}();
+}
 
 
 /*
