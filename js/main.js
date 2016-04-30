@@ -10,11 +10,37 @@
     Llama a: methods.js, helpers.js, interpreter.js
 */
 
+var activePage = null;
+
+function () {
+    function onLoad() {
+        document.addEventListener("deviceready", onDeviceReady, false);
+    }
+
+    function onDeviceReady() {
+        document.addEventListener("backbutton", onBackKeyDown, false);
+    }
+
+    function onBackKeyDown() {
+        if (activePage == null) {
+            navigator.app.exitApp();
+        } else {
+            $(activePage).find('input').val('');
+            $('.puntos').slideDown();
+            $(activePage).find('.results').slideUp();
+            $(activePage).slideUp(function () {
+                $('#back').remove();
+                activePage = null;
+            });
+        }
+    }
+}();
+
 
 /*
     JQ Document Ready - Esta funcion es llamada por el explorador cuando el DOM se encuentra listo para la ejecución de código.
 */
-$(function() {
+$(function () {
     // Inicializar la aplicación.
     main.init();
 });
@@ -34,25 +60,27 @@ var main = {
     /*
         Función que se encarga de inicializar el programa, añadiendo los listeners necesarios a los eventos.
     */
-    init: function() {
-        $('[data-control]').click(function() {
+    init: function () {
+        $('[data-control]').click(function () {
             var target = $(this).data('control'),
                 backHtml = '<img src="img/back.png" alt="Regresar" id="back" class="back">';
             $('.puntos').slideUp();
             $(target).prepend(backHtml).slideDown();
-            $('#back').click(function() {
+            activePage = target;
+            $('#back').click(function () {
                 $(target).find('input').val('');
                 $('.puntos').slideDown();
                 $(target).find('.results').slideUp();
-                $(target).slideUp(function() {
+                $(target).slideUp(function () {
                     $('#back').remove();
+                    activePage = null;
                 });
             });
         });
 
         $('#oneCalc').click(main.one);
 
-        $('#one input').keypress(function(e) {
+        $('#one input').keypress(function (e) {
             if (e.which == 13) {
                 main.one();
             }
@@ -60,7 +88,7 @@ var main = {
 
         $('#twoCalc').click(main.two);
 
-        $('#two input').keypress(function(e) {
+        $('#two input').keypress(function (e) {
             if (e.which == 13) {
                 main.two();
             }
@@ -76,7 +104,7 @@ var main = {
     /*
         Función one - contiene toda la lógica necesaria para la ejecución del punto uno de los requerimientos
     */
-    one: function() {
+    one: function () {
         var eq = $('#oneEq').val().toLowerCase(),
             x = $('#oneX').val();
         if (!helpers.isValidInput(eq, x)) {
@@ -99,7 +127,7 @@ var main = {
     /*
         Función two - contiene toda la lógica necesaria para la ejecución del punto dos de los requerimientos
     */
-    two: function() {
+    two: function () {
         var eq = $('#twoEq').val().toLowerCase(),
             x = $('#twoX').val();
         if (!helpers.isValidInput(eq, x)) {
@@ -133,12 +161,12 @@ var main = {
         /*
             Inicializar campos y asignar listeners de eventos.
         */
-        initInputs: function() {
+        initInputs: function () {
             var baseInputHtml = '<div class="matrix-col"><input class="matrix-input" /></div>';
             $('.matrix').append('<div class="matrix-row">' + baseInputHtml + '</div>');
             $('#three .matrix').find('.matrix-col').append('<div class="row-label">1</div><div class="col-label">1</div>');
 
-            $('#ARow, #ACol, #BRow, #BCol').change(function() {
+            $('#ARow, #ACol, #BRow, #BCol').change(function () {
                 var matrixLetter = $(this).attr('id')[0],
                     rows = $('#' + matrixLetter + 'Row').val(),
                     columns = $('#' + matrixLetter + 'Col').val(),
@@ -157,7 +185,7 @@ var main = {
                 }
                 while (matrix.find('.matrix-row').first().find('.matrix-col').length < columns) {
                     var firstMatrix = matrix.find('.matrix-row').first();
-                    matrix.find('.matrix-row').each(function() {
+                    matrix.find('.matrix-row').each(function () {
                         $(this).append(baseInputHtml);
                     });
                     var i = matrix.find('.matrix-row').first().find('.matrix-col').length;
@@ -165,7 +193,7 @@ var main = {
                         .append('<div class="col-label">' + i++ + '</div>');
                 }
                 while (matrix.find('.matrix-row').first().find('.matrix-col').length > columns) {
-                    matrix.find('.matrix-row').each(function() {
+                    matrix.find('.matrix-row').each(function () {
                         $(this).find('.matrix-col').last().remove();
                     });
                 }
@@ -183,16 +211,16 @@ var main = {
             // Asignar tamaño inicial a la matríz
             $('#ARow').val('2').change();
             $('#ACol').val('2').change();
-            
+
             // Selección de operación
-            $('#matrix-options-wrapper button').click(function() {
+            $('#matrix-options-wrapper button').click(function () {
                 var clickedBtn = $(this).attr('id'),
                     rows = $('#ARow').val(),
                     columns = $('#ACol').val();
                 if (['ApB', 'AmB', 'AxB'].indexOf(clickedBtn) != -1) {
                     main.three.action = clickedBtn;
                     $('#bWrap').slideDown();
-                    $('#matrixOutputWrap').slideUp(function() {
+                    $('#matrixOutputWrap').slideUp(function () {
                         $('#matrixOutput').remove();
                         $(this).css('display', 'block');
                     });
@@ -208,7 +236,7 @@ var main = {
                 }
             });
 
-            $('#calculateMatrix').click(function() {
+            $('#calculateMatrix').click(function () {
                 var toDo = main.three.action,
                     A = main.three.parseMatrix($('#AMatrix')),
                     An = $('#nAVal').val(),
@@ -218,20 +246,20 @@ var main = {
                 A = methods.matrixOps.scalarMult(A, An);
                 B = methods.matrixOps.scalarMult(B, Bn);
                 switch (toDo) {
-                    case 'ApB':
-                        result = methods.matrixOps.addition(A, B, true);
-                        break;
-                    case 'AmB':
-                        result = methods.matrixOps.addition(A, B, false);
-                        break;
-                    case 'AxB':
-                        result = methods.matrixOps.multiplication(A, B, true);
-                        break;
+                case 'ApB':
+                    result = methods.matrixOps.addition(A, B, true);
+                    break;
+                case 'AmB':
+                    result = methods.matrixOps.addition(A, B, false);
+                    break;
+                case 'AxB':
+                    result = methods.matrixOps.multiplication(A, B, true);
+                    break;
                 }
                 main.three.outputMatrix(result);
             });
 
-            $("#nA").click(function() {
+            $("#nA").click(function () {
                 var matrix = $('#AMatrix'),
                     n = $('#nAVal').val();
                 matrix = main.three.parseMatrix(matrix);
@@ -239,7 +267,7 @@ var main = {
                 main.three.outputMatrix(matrix);
             });
 
-            $('#Trans').click(function() {
+            $('#Trans').click(function () {
                 var matrix = $('#AMatrix'),
                     n = $('#nAVal').val();
                 matrix = main.three.parseMatrix(matrix);
@@ -248,7 +276,7 @@ var main = {
                 main.three.outputMatrix(matrix);
             });
 
-            $('#Inv').click(function() {
+            $('#Inv').click(function () {
                 var matrix = $('#AMatrix'),
                     n = $('#nAVal').val(),
                     determinant;
@@ -263,7 +291,7 @@ var main = {
                 }
             });
 
-            $('#Deter').click(function() {
+            $('#Deter').click(function () {
                 var matrix = $('#AMatrix'),
                     n = $('#nAVal').val();
                 matrix = main.three.parseMatrix(matrix);
@@ -277,12 +305,12 @@ var main = {
             Función que convierte las entradas del usuario en un arreglo bidimensional, recibe el nodo padre de los campos a extraer.
             Regresa un arreglo bidimensional.
         */
-        parseMatrix: function(matrix) {
+        parseMatrix: function (matrix) {
             var rows = matrix.find('.matrix-row');
             var parsedMatrix = [];
-            rows.each(function() {
+            rows.each(function () {
                 var thisRow = [];
-                $(this).find('.matrix-input').each(function() {
+                $(this).find('.matrix-input').each(function () {
                     var toAdd = $(this).val();
                     if (isNaN(toAdd)) {
                         alertify.alert("Valores incorrectos en la matriz.");
@@ -305,7 +333,7 @@ var main = {
             Función que convierte un arreglo bidimensional en una matriz que se muestra de forma gráfica sobre campos de texto.
             Recibe una arreglo bidimensional.
         */
-        outputMatrix: function(matrix) {
+        outputMatrix: function (matrix) {
             if ($('#matrixOutput').length < 1)
                 $('#matrixOutputWrap').html('<div id="matrixOutput" class="margin"><h3>Matriz resultante </h3>' +
                     '<div class="matrix-wrapper"><div class="matrix" id="OMatrix"></div></div></div>');
@@ -346,7 +374,7 @@ var main = {
         /*
             Muestra un valor escalar en el área de resultados. Recibe el valor escalar a mostar.
         */
-        outputScalar: function(scalar) {
+        outputScalar: function (scalar) {
             $('#matrixOutputWrap').html('<h3>Determinante:</h3>');
             $('#matrixOutputWrap').append('<h3>' + scalar + '</h3>')
         }
@@ -360,11 +388,11 @@ var main = {
         /*
             Inicializar campos y agregar listeners a los eventos
         */
-        initInputs: function() {
+        initInputs: function () {
             $('#four .matrix').find('.matrix-col').append('<div class="row-label">1</div><div class="col-label">a</div>');
             var baseInputHtml = '<div class="matrix-col"><input class="matrix-input" /></div>';
             var labels = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
-            $('#LinealRow').change(function() {
+            $('#LinealRow').change(function () {
                 var rows = $('#LinealRow').val(),
                     columns = parseFloat(rows) + 1,
                     matrix = $('#LinealMatrix');
@@ -382,7 +410,7 @@ var main = {
                 }
                 while (matrix.find('.matrix-row').first().find('.matrix-col').length < columns) {
                     var firstMatrix = matrix.find('.matrix-row').first();
-                    matrix.find('.matrix-row').each(function() {
+                    matrix.find('.matrix-row').each(function () {
                         if ($(this).find('input').length < columns)
                             $(this).append(baseInputHtml);
                     });
@@ -391,7 +419,7 @@ var main = {
                         .append('<div class="col-label">' + labels[i++ - 1] + '</div>');
                 }
                 while (matrix.find('.matrix-row').first().find('.matrix-col').length > columns) {
-                    matrix.find('.matrix-row').each(function() {
+                    matrix.find('.matrix-row').each(function () {
                         $(this).find('.matrix-col').last().remove();
                     });
                 }
@@ -399,7 +427,7 @@ var main = {
 
             $('#LinealRow').change();
 
-            $('#doFour').click(function() {
+            $('#doFour').click(function () {
                 main.four.calculateSystem(1)
             });
         },
@@ -408,7 +436,7 @@ var main = {
             Construye una matriz aumentada y la resuelve mediante el método de la matriz inversa.
             Recibe un entero que indica qué intento es, para funciones meramente informativas.
         */
-        calculateSystem: function(attemptNo) {
+        calculateSystem: function (attemptNo) {
             var augMatrix = $('#four .matrix'),
                 A = [],
                 B = [];
@@ -446,7 +474,7 @@ var main = {
             Muestra el resultado del método, o pide al usuario fijar un valor en caso de que no se encuentre una solución única.
             Recibe un arreglo bidimensional y un entero que representa el número de intentos.
         */
-        output: function(matrix, failedAttempt) {
+        output: function (matrix, failedAttempt) {
             $('#four .results').slideDown();
             if (failedAttempt) {
                 var eqSize = $('#LinealRow').val(),
@@ -455,7 +483,7 @@ var main = {
                 $('#fourOutput').append('<h2>Es necesario fijar valores.</h2>');
                 $('#fourOutput').append(labels[eqSize - 1] + ' = <input id="fixedA" class="matrix-input">');
                 $('#fourOutput').append('<button id="recalcA" class="btn btn-danger">Calcular</button>');
-                $('#recalcA').one('click', function() {
+                $('#recalcA').one('click', function () {
                     var fixedVal = parseFloat($('#fixedA').val()),
                         newSize = $('#LinealRow').val() - 1;
                     for (var i = 0; i < newSize; i++) {
@@ -488,7 +516,7 @@ var main = {
     /*
         Función five - Contiene la lógica necesaria para la ejecución del punto cinco de los requerimientos.
     */
-    five: function() {
+    five: function () {
         var eq1 = $('#fiveOne').val().toLowerCase(),
             eq2 = $('#fiveTwo').val().toLowerCase(),
             x = $('#fiveX').val();
@@ -520,11 +548,11 @@ var main = {
         /*
             Inicializar campos y asignar listeners a los eventos.
         */
-        init: function() {
+        init: function () {
             $('#six .matrix').find('.matrix-col').append('<div class="row-label">1</div><div class="col-label">x</div>');
             var baseInputHtml = '<div class="matrix-col"><input class="matrix-input" /></div>';
             var labels = ['x', 'y'];
-            $('#fitRow').change(function() {
+            $('#fitRow').change(function () {
                 var rows = $('#fitRow').val(),
                     columns = 2,
                     matrix = $('#fitMatrix');
@@ -542,7 +570,7 @@ var main = {
                 }
                 while (matrix.find('.matrix-row').first().find('.matrix-col').length < columns) {
                     var firstMatrix = matrix.find('.matrix-row').first();
-                    matrix.find('.matrix-row').each(function() {
+                    matrix.find('.matrix-row').each(function () {
                         if ($(this).find('input').length < columns)
                             $(this).append(baseInputHtml);
                     });
@@ -551,7 +579,7 @@ var main = {
                         .append('<div class="col-label">' + labels[i++ - 1] + '</div>');
                 }
                 while (matrix.find('.matrix-row').first().find('.matrix-col').length > columns) {
-                    matrix.find('.matrix-row').each(function() {
+                    matrix.find('.matrix-row').each(function () {
                         $(this).find('.matrix-col').last().remove();
                     });
                 }
@@ -566,7 +594,7 @@ var main = {
 
             $('#fitRow').change();
 
-            $('#doSix').click(function() {
+            $('#doSix').click(function () {
                 var xyPairs = main.six.buildPairsMatrix(),
                     grade = parseFloat($('#fitGrade').val()),
                     AMatrix = [],
@@ -605,7 +633,7 @@ var main = {
             Calcula el valor r cuadarada de un ajuste de curvas. Recibe un arreglo bidimensional de pares x,y y una cadena con una ecuación.
             Regresa un flotante. 
         */
-        getRSQ: function(xyPairs, equation) {
+        getRSQ: function (xyPairs, equation) {
             var sum = 0,
                 yiym = 0,
                 yipx = 0;
@@ -625,7 +653,7 @@ var main = {
             Recibe un arreglo bidimensional de tamaño N,1 y un booleano que indica si los exponentes han de ser agregados con estilo.
             Regresa una cadena.
         */
-        buildEquation: function(coefficients, prettyExponents) {
+        buildEquation: function (coefficients, prettyExponents) {
             var txt = "";
             for (var i = coefficients.length - 1; i >= 0; i--) {
                 var thisCoef = parseFloat(coefficients[i][0].toFixed(6));
@@ -644,7 +672,7 @@ var main = {
             Extrae los x,y valores de los campos y los introduce en una arreglo bidimensional.
             Regrsa un arreglo bidimensional de tamaño N,2
         */
-        buildPairsMatrix: function() {
+        buildPairsMatrix: function () {
             var values = [],
                 xVals = [],
                 n = $('#fitRow').val();
