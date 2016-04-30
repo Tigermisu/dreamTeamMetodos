@@ -246,9 +246,18 @@ label {
     
     body {
         background-image: url(../img/logo-bg.png);
-        background-attachment: fixed;
         background-repeat: no-repeat;
         background-position: center center;
         background-size: contain;
+    }
+    
+    html, body {
+        height: 100%;
+    }
+    html {
+        overflow-y: hidden;
+    }
+    body {
+        overflow-y: scroll;
     }
 }
