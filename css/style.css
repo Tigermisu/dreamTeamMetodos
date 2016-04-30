@@ -35,12 +35,24 @@ body {
 .punto {
     display: inline-block;
     width: auto;
-    margin: 10px;
+    margin: 0px;
     padding: 5px 10px;
     border: 3px solid #333;
     background-color: #ecf0f1;
-    border-radius: 10px;
+    background: -webkit-linear-gradient(#ecf0f1, #e1d584);
+    background: -o-linear-gradient(#ecf0f1, #e1d584); 
+    background: -moz-linear-gradient(#ecf0f1, #e1d584);
+    background: linear-gradient(#ecf0f1, #e1d584);
+    transition: background 0.3s;
     cursor: pointer;
+}
+
+.punto:hover {
+    background-color: #d3dcde;
+    background: -webkit-linear-gradient(#ecf0f1, #d7c75b);
+    background: -o-linear-gradient(#ecf0f1, #d7c75b); 
+    background: -moz-linear-gradient(#ecf0f1, #d7c75b);
+    background: linear-gradient(#ecf0f1, #d7c75b);    
 }
 
 .back {
@@ -51,7 +63,7 @@ body {
     display: block;
 }
 
-.punto:hover, .back:hover {
+.back:hover {
     background-color: #d3dcde;
 }
 
@@ -66,6 +78,7 @@ h1 {
 
 h2 {
     text-align: center;
+    font-size: 24px
 }
 
 input {
@@ -207,9 +220,14 @@ label {
         width: 100%;
         display: block;
         margin: -3px 0px;
+        background: #ecf0f1;
         border-radius: 0px;
         border-left: none;
         border-right: none;
+    }
+    
+    .punto:hover {
+        background: #d3dcde;        
     }
     
     .matrix {

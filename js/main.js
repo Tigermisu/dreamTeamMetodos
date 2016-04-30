@@ -2,10 +2,10 @@
     Nombre: main.js
     Descripción: Clase principal de la aplicación, se encarga de controlar tanto la interfaz gráfica como el flujo de los métodos. 
     Fecha de creación: 6 de abril de 2016
-    Fecha de modificación: 21 de abril de 2016
+    Fecha de modificación: 29 de abril de 2016
     Autor original: Christopher Jáquez Prado
     Autor de última modificación: Christopher Jáquez Prado
-    Descripción de última modificación: Se agegaron comentarios detallados
+    Descripción de última modificación: Se agregó una validación faltante
     Llamado por: Nada.
     Llama a: methods.js, helpers.js, interpreter.js
 */
@@ -491,12 +491,12 @@ var main = {
     five: function() {
         var eq1 = $('#fiveOne').val().toLowerCase(),
             eq2 = $('#fiveTwo').val().toLowerCase(),
-            x = $('#fiveX').val(),
-            y = helpers.eval(eq1, x);
+            x = $('#fiveX').val();
         if (!(helpers.isValidInput(eq1, x) && helpers.isValidInput(eq2, x))) {
             alertify.alert("Ecuación inválida.");
             return false;
         }
+        var y = helpers.eval(eq1, x);
         try {
             var result = parseFloat(methods.newtonMultivariable(eq1, eq2, x, y).toFixed(6)),
                 point = "(" + result + ", " + parseFloat(helpers.eval(eq1, result).toFixed(6)) + ")";

@@ -2,10 +2,10 @@
     Nombre: metodos.js
     Descripción: Contiene la lógica de los métodos numéricos utilizados en la aplicación.
     Fecha de creación: 6 de abril de 2016
-    Fecha de modificación: 21 de abril de 2016
+    Fecha de modificación: 29 de abril de 2016
     Autor original: Christopher Jáquez Prado
     Autor de última modificación: Christopher Jáquez Prado
-    Descripción de última modificación: Se agegaron comentarios detallados
+    Descripción de última modificación: Se arregló un error en el cambio de renglón en el Gauss-Jordan para el cálculo de la matriz inversa.
     Llamado por: main.js
     Llama a: helpers.js
 */
@@ -98,12 +98,21 @@ var methods = {
                 var pivotNode = gjMatrix[i][i];
                 // Si el pivote es 0, se cambia por el siguiente renglón si éste existe. 
                 if(Math.abs(pivotNode) < 0.00000001 && i+1 < rows) {
-                    var currentRow = [];
+                    var currentRow = [], identityRow = [], targetSwap = null;
+                    // Encontrar un renglón cuyo pivote no sea cero
+                    for(var toBeSwapped = i+1; toBeSwapped < rows && targetSwap == null; toBeSwapped++) {
+                        if(Math.abs(gjMatrix[toBeSwapped][i]) >= 0.00000001) targetSwap = toBeSwapped;
+                    }
+                    // Ejecutar el reemplazo de renglones
                     for(var c = 0; c < rows; c++) {
                         currentRow.push(gjMatrix[i][c]);
-                        gjMatrix[i][c] = gjMatrix[i+1][c];
-                        gjMatrix[i+1][c] = currentRow[c];
+                        identityRow.push(identityMatrix[i][c]);
+                        gjMatrix[i][c] = gjMatrix[targetSwap][c];
+                        gjMatrix[targetSwap][c] = currentRow[c];
+                        identityMatrix[i][c] = identityMatrix[targetSwap][c];
+                        identityMatrix[targetSwap][c] = identityRow[c];
                     }
+                    // Actualizar el nodo pivote
                     pivotNode = gjMatrix[i][i];
                 }
                 // El pivote, y todo su renglón, se divide entre el pivote.
