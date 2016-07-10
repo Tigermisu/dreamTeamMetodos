@@ -655,7 +655,7 @@ var main = {
                 var thisCoef = parseFloat(coefficients[i][0].toFixed(6));
                 if (i > 0 && thisCoef == 1) thisCoef = "";
                 if (thisCoef !== 0) {
-                    txt += (thisCoef > 0 && txt.length > 0) ? " + " + thisCoef :
+                    txt += (thisCoef >= 0 && txt.length > 0) ? " + " + thisCoef :
                         (txt.length > 0) ? " - " + Math.abs(thisCoef) : thisCoef;
                     if (i > 1) txt += prettyExponents ? "x<span class='exponent'>" + i + "</span>" : "x^" + i;
                     else if (i == 1) txt += "x";
